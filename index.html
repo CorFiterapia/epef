@@ -3,100 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EPEF - Prescripción del Ejercicio</title>
+    <title>EPEF - Prescripción Avanzada</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
             --primary: #2c3e50; --accent: #27ae60; --warning: #f39c12;
             --danger: #e74c3c; --bg: #f4f7f6; --white: #ffffff;
         }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--primary); display: flex; justify-content: center; padding: 20px; }
-        .container { background: var(--white); max-width: 550px; width: 100%; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        header { text-align: center; border-bottom: 3px solid var(--accent); margin-bottom: 20px; }
+        .container { background: var(--white); max-width: 600px; width: 100%; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        header { text-align: center; border-bottom: 3px solid var(--accent); margin-bottom: 20px; padding-bottom: 10px;}
         .form-group { margin-bottom: 12px; }
         label { display: block; margin-bottom: 4px; font-weight: 600; font-size: 0.8rem; color: #34495e; text-transform: uppercase; }
         select, input { width: 100%; padding: 10px; border: 1px solid #dcdde1; border-radius: 8px; font-size: 0.95rem; box-sizing: border-box; }
-        .btn-group { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-top: 20px; }
-        button { padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .btn-calc { background: var(--accent); color: white; }
+        
+        .btn-group { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+        button { padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; width: 100%; }
+        .btn-calc { background: var(--accent); color: white; font-size: 1.1rem; }
+        .btn-pdf { background: var(--primary); color: white; display: none; }
         .btn-reset { background: #95a5a6; color: white; }
         button:hover { opacity: 0.9; transform: translateY(-2px); }
-        #resultado { margin-top: 25px; padding: 20px; border-radius: 10px; display: none; animation: fadeIn 0.4s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .score-val { font-size: 1.8rem; font-weight: 800; display: block; }
-        .note-area { margin-top: 15px; font-size: 0.85rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 10px; }
+        
+        #resultado { margin-top: 25px; padding: 20px; border-radius: 10px; display: none; animation: fadeIn 0.4s; border: 1px solid rgba(0,0,0,0.1); }
+        .score-val { font-size: 1.8rem; font-weight: 800; display: block; margin-bottom: 5px;}
+        .estadio-tag { font-size: 1.3rem; font-weight: 700; display: block; margin-bottom: 15px; text-transform: uppercase; }
+        .rec-card { background: rgba(255,255,255,0.9); color: #333; padding: 15px; border-radius: 8px; font-size: 0.95rem; text-align: left; }
+        .rec-card h4 { margin: 0 0 8px 0; border-bottom: 1px solid #ccc; padding-bottom: 5px; }
     </style>
 </head>
 <body>
 
-<div class="container">
+<div class="container" id="app-content">
     <header>
-        <h2>Sistema EPEF</h2>
-        <p style="color: #7f8c8d; margin-bottom: 10px;">Estratificación Metabólica Adaptativa</p>
+        <h2>Sistema EPEF Pro</h2>
+        <p style="color: #7f8c8d; margin:0;">Prescripción del Ejercicio Físico</p>
     </header>
     
-    <div class="form-group">
-        <label>Nombre del Paciente (Opcional)</label>
-        <input type="text" id="paciente" placeholder="Ej: Juan Pérez">
-    </div>
-
-    <div class="grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+    <div id="form-area">
         <div class="form-group">
-            <label>Diagnóstico</label>
-            <select id="diagnostico">
-                <option value="riesgo">Riesgo</option>
-                <option value="prediabetes">Prediabetes</option>
-                <option value="dm2">DM2</option>
+            <label>Nombre del Paciente</label>
+            <input type="text" id="paciente" placeholder="Nombre completo">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div class="form-group">
+                <label>Diagnóstico</label>
+                <select id="diagnostico">
+                    <option value="riesgo">Riesgo Metabólico</option>
+                    <option value="prediabetes">Prediabetes</option>
+                    <option value="dm2">Diabetes Tipo 2</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Complicaciones</label>
+                <select id="complicaciones">
+                    <option value="no">Sin Complicaciones</option>
+                    <option value="si">Con Complicaciones</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Medicación</label>
+            <select id="medicacion">
+                <option value="ninguna">Ninguna</option>
+                <option value="metformina">Metformina</option>
+                <option value="otra">Otras / Insulina</option>
             </select>
         </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div class="form-group">
+                <label>Fatiga</label>
+                <select id="fatiga">
+                    <option value="fatiga_baja">Baja</option>
+                    <option value="fatiga_media">Media</option>
+                    <option value="fatiga_alta">Alta</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Edo. Emocional</label>
+                <select id="emocional">
+                    <option value="estable">Estable</option>
+                    <option value="ansiedad">Ansiedad</option>
+                    <option value="depresion">Depresión</option>
+                </select>
+            </div>
+        </div>
+
         <div class="form-group">
-            <label>Complicaciones</label>
-            <select id="complicaciones">
-                <option value="no">No</option>
-                <option value="si">Sí</option>
+            <label>Nivel Actividad</label>
+            <select id="actividad">
+                <option value="alta">Muy Activo</option>
+                <option value="moderada">Moderado</option>
+                <option value="baja">Sedentario</option>
             </select>
         </div>
-    </div>
-
-    <div class="form-group">
-        <label>Medicación</label>
-        <select id="medicacion">
-            <option value="ninguna">Ninguna</option>
-            <option value="metformina">Metformina</option>
-            <option value="otra">Otras/Insulina</option>
-        </select>
-    </div>
-
-    <div class="grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-        <div class="form-group">
-            <label>Fatiga</label>
-            <select id="fatiga">
-                <option value="fatiga_baja">Baja</option>
-                <option value="fatiga_media">Media</option>
-                <option value="fatiga_alta">Alta</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label>Emocional</label>
-            <select id="emocional">
-                <option value="estable">Estable</option>
-                <option value="ansiedad">Ansiedad</option>
-                <option value="depresion">Depresión</option>
-            </select>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label>Actividad Física</label>
-        <select id="actividad">
-            <option value="alta">Activo</option>
-            <option value="moderada">Moderado</option>
-            <option value="baja">Sedentario</option>
-        </select>
     </div>
 
     <div class="btn-group">
         <button class="btn-calc" onclick="clasificarEPEF()">CALCULAR ESTRATIFICACIÓN</button>
-        <button class="btn-reset" onclick="resetForm()">LIMPIAR</button>
+        <button id="btn-pdf" class="btn-pdf" onclick="generarPDF()">DESCARGAR REPORTE PDF</button>
+        <button class="btn-reset" onclick="resetForm()">NUEVA CONSULTA</button>
     </div>
 
     <div id="resultado"></div>
@@ -109,16 +117,48 @@ function clasificarEPEF(){
     
     let score = (vals[document.getElementById("diagnostico").value] * pesos.dx) + (vals[document.getElementById("complicaciones").value] * pesos.comp) + (vals[document.getElementById("medicacion").value] * pesos.med) + (vals[document.getElementById("fatiga").value] * pesos.fatiga) + (vals[document.getElementById("emocional").value] * pesos.emocional) + (vals[document.getElementById("actividad").value] * pesos.actividad);
 
-    let e = "", r = "", c = "", t = "#fff";
-    if(score <= 10){ e="Estadio Ia - Prevención"; r="Aeróbico moderado 150 min/sem + Fuerza."; c="#27ae60"; }
-    else if(score <= 18){ e="Estadio IIb - Prediabetes"; r="Entrenamiento combinado + Monitoreo glucemia."; c="#f1c40f"; t="#2c3e50"; }
-    else if(score <= 28){ e="Estadio IIIc - DM2 Establecida"; r="Intervalado moderado + Fuerza progresiva supervisada."; c="#e67e22"; }
-    else { e="Estadio IVd - DM2 Alto Riesgo"; r="Ejercicio clínico supervisado. Evaluación médica obligatoria."; c="#c0392b"; }
+    let e = "", det = "", c = "", t = "#fff";
+
+    if(score <= 10){
+        e="Estadio Ia - Prevención"; c="#27ae60";
+        det="<li><b>Aeróbico:</b> 150-300 min/sem (Moderado).</li><li><b>Fuerza:</b> 2-3 días/sem.</li><li><b>Frecuencia:</b> Diaria.</li>";
+    } else if(score <= 18){
+        e="Estadio IIb - Prediabetes"; c="#f1c40f"; t="#2c3e50";
+        det="<li><b>Aeróbico:</b> HIIT supervisado o caminata rápida.</li><li><b>Fuerza:</b> 12-15 reps.</li><li><b>Control:</b> Monitorear glucemia post-ejercicio.</li>";
+    } else if(score <= 28){
+        e="Estadio IIIc - DM2 Establecida"; c="#e67e22";
+        det="<li><b>Aeróbico:</b> 30-45 min (50-70% FCM).</li><li><b>Fuerza:</b> Funcional y resistencia.</li><li><b>Alerta:</b> No entrenar si glucemia >250 mg/dL.</li>";
+    } else {
+        e="Estadio IVd - DM2 Alto Riesgo"; c="#c0392b";
+        det="<li><b>Supervisión:</b> Clínica obligatoria.</li><li><b>Intensidad:</b> Baja (Borg 3-4).</li><li><b>Cuidado:</b> Revisión de pies y calzado.</li>";
+    }
 
     const res = document.getElementById("resultado");
     res.style.display = "block"; res.style.backgroundColor = c; res.style.color = t;
-    res.innerHTML = `<span class="score-val">Puntaje: ${score}</span><strong>${e}</strong><div class="note-area"><b>Prescripción:</b> ${r}</div>`;
+    res.innerHTML = `
+        <p style="margin:0; font-size:0.9rem;">Paciente: ${document.getElementById("paciente").value || 'No especificado'}</p>
+        <span class="score-val">Puntaje: ${score}</span>
+        <span class="estadio-tag">${e}</span>
+        <div class="rec-card">
+            <h4>Plan de Trabajo Sugerido:</h4>
+            <ul style="padding-left:15px; margin:0;">${det}</ul>
+        </div>`;
+    
+    document.getElementById("btn-pdf").style.display = "block";
 }
+
+function generarPDF() {
+    const elemento = document.getElementById('app-content');
+    const opt = {
+        margin: 10,
+        filename: `Reporte_EPEF_${document.getElementById('paciente').value || 'Paciente'}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+    html2pdf().set(opt).from(elemento).save();
+}
+
 function resetForm(){ location.reload(); }
 </script>
 </body>
