@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EPEF PRO - Clasificación por Estadios</title>
+    <title>EPEF PRO - Sistema Maestro de Estadios</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -11,108 +11,128 @@
             --primary: #0a2e4d; --clinical: #2980b9; --success: #27ae60; 
             --warning: #f39c12; --danger: #c0392b; --bg: #f4f7f6;
         }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: #333; margin: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; }
+        nav { background: var(--primary); color: white; padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; }
+        .container { max-width: 1100px; margin: 20px auto; padding: 0 20px; }
         
-        nav { display: flex; background: var(--primary); padding: 1rem 5%; justify-content: space-between; align-items: center; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-        .logo { font-weight: 800; font-size: 1.7rem; }
-
-        .container { max-width: 1100px; margin: 25px auto; padding: 0 20px; }
-
         .role-selector { display: flex; gap: 10px; margin-bottom: 25px; background: #e0e6ed; padding: 6px; border-radius: 15px; }
-        .role-btn { flex: 1; border: none; padding: 16px; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.3s; color: #555; background: transparent; }
+        .role-btn { flex: 1; border: none; padding: 16px; border-radius: 12px; font-weight: 700; cursor: pointer; color: #555; background: transparent; }
         .role-btn.active { background: var(--primary); color: white; }
 
-        .card { background: white; border-radius: 20px; padding: 30px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); margin-bottom: 25px; border: 1px solid #dee2e6; }
-        h2 { color: var(--primary); border-bottom: 2px solid #f1f1f1; padding-bottom: 12px; margin-top: 0; display: flex; align-items: center; gap: 12px; font-size: 1.4rem; }
+        .card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); margin-bottom: 20px; }
+        h2 { color: var(--primary); border-bottom: 2px solid #f1f1f1; padding-bottom: 10px; font-size: 1.3rem; }
 
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
+        .grid-tests { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+        .test-item { background: #f8fafc; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; }
+        .test-link { font-size: 0.75rem; color: var(--clinical); text-decoration: none; display: block; margin-bottom: 5px; font-weight: bold; }
+        .test-link:hover { text-decoration: underline; }
 
-        label { display: block; margin-bottom: 6px; font-weight: 700; font-size: 0.9rem; }
-        input, select { width: 100%; padding: 12px; border: 2px solid #cbd5e0; border-radius: 10px; font-size: 1rem; }
+        /* Borg Tactil Mejorado */
+        .borg-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 15px; margin-top: 20px; }
+        .borg-btn { height: 70px; border: 2px solid #cbd5e0; border-radius: 15px; font-size: 1.4rem; font-weight: 900; background: white; cursor: pointer; transition: 0.2s; }
+        .borg-btn:active { transform: scale(0.9); background: var(--clinical); color: white; }
 
-        /* Complicaciones Chips */
-        .comp-group { display: flex; flex-wrap: wrap; gap: 10px; margin: 15px 0; }
-        .comp-chip { padding: 10px 15px; border-radius: 10px; border: 1.5px solid #cbd5e0; cursor: pointer; font-size: 0.85rem; background: #f8fafc; }
-        .comp-chip:has(input:checked) { background: #ebf8ff; border-color: var(--clinical); color: var(--clinical); font-weight: bold; }
+        .comp-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+        .comp-chip { padding: 8px 12px; border-radius: 8px; border: 1px solid #cbd5e0; font-size: 0.85rem; cursor: pointer; }
+        .comp-chip:has(input:checked) { background: #ebf8ff; border-color: var(--clinical); }
 
-        /* Monitor Paciente */
-        .monitor-display { background: #1a202c; color: #4fd1c5; padding: 35px; border-radius: 25px; text-align: center; border: 4px solid #2d3748; }
-        .timer-txt { font-size: 3.5rem; font-weight: 900; }
-        .rep-txt { font-size: 5.5rem; color: #fff; margin: 10px 0; }
-
-        .btn-main { background: var(--success); color: white; border: none; padding: 20px; border-radius: 15px; font-size: 1.2rem; font-weight: 800; width: 100%; cursor: pointer; margin-top: 15px; }
+        .btn-main { background: var(--success); color: white; border: none; padding: 20px; border-radius: 15px; font-size: 1.1rem; font-weight: 800; width: 100%; cursor: pointer; margin-top: 10px; }
         
-        /* Estadios Badge */
-        .estadio-badge { padding: 15px; border-radius: 12px; text-align: center; font-weight: 900; font-size: 1.4rem; margin-bottom: 20px; color: white; }
-
-        #reporte-final { display: none; }
+        .estadio-badge { padding: 15px; border-radius: 12px; color: white; text-align: center; font-weight: 800; margin-bottom: 15px; }
+        
+        #view-pac .monitor-display { background: #1a202c; color: #4fd1c5; padding: 30px; border-radius: 20px; margin-bottom: 20px; }
     </style>
 </head>
 <body>
 
 <nav>
     <div class="logo">EPEF PRO <i class="fas fa-microscope"></i></div>
-    <div style="font-size: 0.85rem;">Algoritmo de Clasificación Metabólica</div>
+    <span>Clasificación Basada en Evidencia 2026</span>
 </nav>
 
 <div class="container">
     <div class="role-selector">
-        <button class="role-btn active" onclick="switchMode('pro', this)">PROFESIONAL</button>
-        <button class="role-btn" onclick="switchMode('pac', this)">PACIENTE</button>
+        <button class="role-btn active" onclick="switchMode('pro', this)">VALORACIÓN CLÍNICA</button>
+        <button class="role-btn" onclick="switchMode('pac', this)">MÓDULO PACIENTE</button>
     </div>
 
     <div id="view-pro">
         <div class="card">
-            <h2><i class="fas fa-user-md"></i> Perfil Clínico</h2>
-            <div class="grid-2">
-                <div><label>Paciente</label><input type="text" id="p-nombre" placeholder="Nombre completo"></div>
+            <h2><i class="fas fa-user-check"></i> 1. Identificación y Complicaciones</h2>
+            <div class="grid-tests" style="grid-template-columns: 1fr 1fr;">
+                <div><label>Nombre Paciente</label><input type="text" id="p-nombre"></div>
                 <div>
-                    <label>Medicación Crítica</label>
-                    <select id="p-med">
-                        <option value="0">Metformina / Sin fármacos riesgo</option>
-                        <option value="5">SGLT2 / GLP-1</option>
-                        <option value="10">Insulina / Sulfonilureas (Riesgo Hipoglucemia)</option>
+                    <label>Condición Metabólica</label>
+                    <select id="p-condicion">
+                        <option value="riesgo">Factores de Riesgo (Ismail 2021)</option>
+                        <option value="prediabetes">Prediabetes / Resistencia Insulina (Zhang 2024)</option>
+                        <option value="dm2">DM2 / Disfunción Mitocondrial (Rebello 2023)</option>
+                        <option value="complicado">DM2 con Complicaciones (Anderson 2025)</option>
                     </select>
                 </div>
             </div>
-
-            <label style="margin-top: 20px;">Complicaciones (Filtro de Estadio):</label>
+            <label style="margin-top:15px; display:block;">Complicaciones / Factores Asociados:</label>
             <div class="comp-group">
-                <label class="comp-chip"><input type="checkbox" class="comp-check" value="Retinopatía"> Retinopatía</label>
-                <label class="comp-chip"><input type="checkbox" class="comp-check" value="Nefropatía"> Nefropatía</label>
-                <label class="comp-chip"><input type="checkbox" class="comp-check" value="Neuropatía"> Neuropatía</label>
-                <label class="comp-chip"><input type="checkbox" class="comp-check" value="Pie Diabético"> Pie Diabético</label>
-                <label class="comp-chip"><input type="checkbox" class="comp-check" value="Isquemia"> Cardiopatía Isquémica</label>
+                <label class="comp-chip"><input type="checkbox" class="c-val" value="obesidad"> Obesidad/Sedentarismo</label>
+                <label class="comp-chip"><input type="checkbox" class="c-val" value="isquemia"> Cardiopatía/Isquemia</label>
+                <label class="comp-chip"><input type="checkbox" class="c-val" value="neuropatia"> Neuropatía</label>
+                <label class="comp-chip"><input type="checkbox" class="c-val" value="cognitivo"> Deterioro Cognitivo</label>
+                <label class="comp-chip"><input type="checkbox" class="c-val" value="insulina"> Uso de Insulina</label>
             </div>
         </div>
 
         <div class="card">
-            <h2><i class="fas fa-tasks"></i> Evaluación Multidimensional</h2>
-            <div class="grid-4">
-                <div class="test-box"><label>🍔 Barthel (0-100)</label><input type="number" id="p-barthel" value="100"></div>
-                <div class="test-box"><label>🧠 PHQ-9 (0-27)</label><input type="number" id="p-phq" value="0"></div>
-                <div class="test-box"><label>😰 GAD-7 (0-21)</label><input type="number" id="p-gad" value="0"></div>
-                <div class="test-box"><label>🏃 IPAQ (Actividad)</label><select id="p-ipaq"><option value="Bajo">Bajo</option><option value="Mod">Mod</option><option value="Alto">Alto</option></select></div>
+            <h2><i class="fas fa-clipboard-list"></i> 2. Batería de Tests (Enlaces Directos)</h2>
+            <div class="grid-tests">
+                <div class="test-item">
+                    <a href="https://www.mdcalc.com/barthel-index-activities-daily-living" target="_blank" class="test-link">Abrir Test Barthel <i class="fas fa-external-link-alt"></i></a>
+                    <label>Resultado Barthel (0-100)</label>
+                    <input type="number" id="res-barthel" placeholder="Puntaje">
+                </div>
+                <div class="test-item">
+                    <a href="https://patient.info/doctor/patient-health-questionnaire-phq-9" target="_blank" class="test-link">Abrir PHQ-9 (Depresión) <i class="fas fa-external-link-alt"></i></a>
+                    <label>Resultado PHQ-9</label>
+                    <input type="number" id="res-phq" placeholder="Puntaje">
+                </div>
+                <div class="test-item">
+                    <a href="https://adaa.org/sites/default/files/GAD-7_Anxiety-scale_0.pdf" target="_blank" class="test-link">Abrir GAD-7 (Ansiedad) <i class="fas fa-external-link-alt"></i></a>
+                    <label>Resultado GAD-7</label>
+                    <input type="number" id="res-gad" placeholder="Puntaje">
+                </div>
+                <div class="test-item">
+                    <a href="https://sites.google.com/site/theipaq/scoring-protocol" target="_blank" class="test-link">Protocolo IPAQ <i class="fas fa-external-link-alt"></i></a>
+                    <label>IPAQ (METs/min/sem)</label>
+                    <input type="number" id="res-ipaq" placeholder="Ej: 800">
+                </div>
             </div>
-            <button class="btn-main" onclick="clasificarEstadios()">CLASIFICAR Y GENERAR PRESCIPCIÓN</button>
+            <button class="btn-main" onclick="procesarEstadio()">CLASIFICAR ESTADIO EPEF</button>
         </div>
     </div>
 
     <div id="view-pac" style="display: none;">
         <div class="card" style="text-align:center;">
+            <h2>Autoevaluación de Esfuerzo</h2>
             <div class="monitor-display">
-                <div class="timer-txt" id="timer">00:00</div>
-                <div class="rep-txt" id="reps">0</div>
-                <p>REPETICIONES AUTOMÁTICAS</p>
+                <div style="font-size:3rem; font-weight:900;" id="timer">00:00</div>
+                <div style="font-size:1.2rem;">Tiempo de Sesión</div>
             </div>
-            <button class="btn-main" style="background:var(--clinical);" onclick="startSensor()">INICIAR MONITOR</button>
+            
+            <h3 style="margin-bottom:5px;">¿Cómo sientes tu esfuerzo ahora?</h3>
+            <p style="font-size:0.85rem; color:#666; margin-bottom:15px;">Toca el número que mejor describa tu cansancio</p>
+            
+            <div class="borg-grid" id="borg-tactil">
+                </div>
+            
+            <div class="grid-tests" style="margin-top:25px;">
+                <button class="btn-main" style="background:var(--clinical);" onclick="iniciarEjercicio()">INICIAR</button>
+                <button class="btn-main" style="background:var(--danger);" onclick="pararEjercicio()">DETENER</button>
+            </div>
         </div>
     </div>
 
-    <div id="reporte-final" class="card">
-        <div id="print-area"></div>
-        <button class="btn-main" style="background:var(--primary);" onclick="descargar()">EXPORTAR PDF CLÍNICO</button>
+    <div id="reporte-final" class="card" style="display:none;">
+        <div id="pdf-area"></div>
+        <button class="btn-main" style="background:var(--primary);" onclick="descargarPDF()">DESCARGAR REPORTE CLÍNICO</button>
     </div>
 </div>
 
@@ -124,70 +144,74 @@
         btn.classList.add('active');
     }
 
-    function clasificarEstadios() {
-        const comps = document.querySelectorAll('.comp-check:checked').length;
-        const med = parseInt(document.getElementById('p-med').value);
-        const barthel = parseInt(document.getElementById('p-barthel').value);
-        const ipaq = document.getElementById('p-ipaq').value;
+    // Borg Tactil
+    const borgContainer = document.getElementById('borg-tactil');
+    for(let i=0; i<=10; i++) {
+        borgContainer.innerHTML += `<button class="borg-btn" onclick="registrarBorg(${i})">${i}</button>`;
+    }
 
-        let estadio = ""; let color = ""; let fitt = ""; let razon = "";
+    function registrarBorg(n) {
+        alert(`Esfuerzo nivel ${n} registrado en la sesión.`);
+    }
 
-        // LÓGICA DE CLASIFICACIÓN EPEF PRO
-        if (comps >= 2 || barthel < 60 || med === 10) {
-            estadio = "ESTADIO III - CUIDADO CRÍTICO";
-            color = "#c0392b"; // Rojo
-            razon = "Presencia de múltiples complicaciones, dependencia funcional o alto riesgo de hipoglucemia.";
-            fitt = "F: 3 días/sem. I: Borg 2-3 (Muy ligero). T: 10-20 min fraccionados. T: Movilidad articular y caminata asistida.";
-        } 
-        else if (comps === 1 || (barthel >= 60 && barthel <= 90) || ipaq === "Bajo") {
-            estadio = "ESTADIO II - CONTROL INTERMEDIO";
-            color = "#f39c12"; // Naranja
-            razon = "Paciente con una complicación controlada o nivel de sedentarismo marcado.";
-            fitt = "F: 3-4 días/sem. I: Borg 4-5. T: 30 min. T: Entrenamiento concurrente (Fuerza 2 días + Aeróbico 2 días).";
-        } 
-        else {
-            estadio = "ESTADIO I - PREVENCIÓN Y OPTIMIZACIÓN";
-            color = "#27ae60"; // Verde
-            razon = "Paciente funcional, sin complicaciones evidentes y medicación de bajo riesgo.";
-            fitt = "F: 5 días/sem. I: Borg 6-7. T: 45-60 min. T: HIIT moderado o resistencia aeróbica continua.";
+    function procesarEstadio() {
+        const condicion = document.getElementById('p-condicion').value;
+        const barthel = parseInt(document.getElementById('res-barthel').value) || 100;
+        const phq = parseInt(document.getElementById('res-phq').value) || 0;
+        const comps = document.querySelectorAll('.c-val:checked').length;
+        
+        let estadio = ""; let desc = ""; let color = ""; let fitt = "";
+
+        if (condicion === "complicado" || barthel < 60 || comps >= 3) {
+            estadio = "ESTADIO IV - COMPLICACIONES CRÓNICAS";
+            color = var(--danger);
+            desc = "Paciente con alto riesgo CV, posible deterioro cognitivo o fragilidad (Anderson 2025). Intolerancia al ejercicio probable.";
+            fitt = "F: 2-3 días. I: Borg 2-3. T: Movilidad articular y fuerza submáxima.";
+        } else if (condicion === "dm2") {
+            estadio = "ESTADIO III - DM2 ESTABLECIDA";
+            color = "#8e44ad";
+            desc = "Resistencia a la insulina y disfunción mitocondrial activa (Rebello 2023). Objetivo: Optimizar transporte de glucosa.";
+            fitt = "F: 3-5 días. I: Borg 4-6. T: Aeróbico estructurado para inflamación sistémica.";
+        } else if (condicion === "prediabetes" || phq > 10) {
+            estadio = "ESTADIO II - PREDIABETES Y RGG";
+            color = var(--warning);
+            desc = "Alteración de regulación de glucosa. Ansiedad/Depresión asociada (Zhang 2024).";
+            fitt = "F: 5 días. I: Moderada. T: Caminata 50 min (Estrategia Zhang 2025). Dosis: 1100 MET-min/sem.";
+        } else {
+            estadio = "ESTADIO I - IDENTIFICACIÓN DE RIESGO";
+            color = var(--success);
+            desc = "Individuos con factores de riesgo. Prevención primaria (Ismail 2021). Modificación de estilo de vida superior a metformina.";
+            fitt = "F: Diario. I: Progresiva. T: Multimodal. Enfoque: Sueño, Tabaco y Actividad.";
         }
 
-        const area = document.getElementById('print-area');
         document.getElementById('reporte-final').style.display = "block";
-
-        area.innerHTML = `
+        document.getElementById('pdf-area').innerHTML = `
             <div class="estadio-badge" style="background:${color}">${estadio}</div>
-            <div style="padding:10px; border-bottom:2px solid #eee;">
-                <p><strong>PACIENTE:</strong> ${document.getElementById('p-nombre').value.toUpperCase()}</p>
-                <p><strong>RAZÓN CLÍNICA:</strong> ${razon}</p>
-            </div>
-            <div style="margin:20px 0; background:#f9f9f9; padding:20px; border-radius:10px;">
-                <h3 style="color:${color}"><i class="fas fa-prescription"></i> Prescripción FITT-VP</h3>
-                <p>${fitt}</p>
-            </div>
-            <div style="background:#fff3cd; padding:15px; border-left:5px solid #ffeeba;">
-                <h3 style="margin-top:0;">📢 Recomendación al Paciente</h3>
-                <p>Hola, según tu evaluación, lo ideal es que empieces con ejercicios suaves. No olvides hidratarte y si sientes fatiga extrema, detente. ¡Tu esfuerzo cuenta!</p>
+            <div style="padding:15px; border:1px solid #eee; border-radius:10px;">
+                <h3>Análisis del Profesional</h3>
+                <p><strong>Descripción:</strong> ${desc}</p>
+                <hr>
+                <p><strong>Pauta Terapéutica (FITT-VP):</strong> ${fitt}</p>
+                <p style="font-size:0.8rem; color:#666;">Basado en compilación de autores (Ismail, Zhang, Rebello, Anderson, 2021-2025).</p>
             </div>
         `;
         window.scrollTo(0, document.body.scrollHeight);
     }
 
-    // Acelerómetro
-    let count = 0;
-    function startSensor() {
-        if (window.DeviceMotionEvent) {
-            window.addEventListener('devicemotion', (e) => {
-                let a = e.accelerationIncludingGravity;
-                if(Math.abs(a.x) + Math.abs(a.y) > 15) {
-                    count++; document.getElementById('reps').innerText = Math.floor(count/8);
-                }
-            });
-        }
+    let crono; let s = 0;
+    function iniciarEjercicio() {
+        crono = setInterval(() => {
+            s++;
+            let min = Math.floor(s/60).toString().padStart(2,'0');
+            let seg = (s%60).toString().padStart(2,'0');
+            document.getElementById('timer').innerText = `${min}:${seg}`;
+        }, 1000);
     }
+    function pararEjercicio() { clearInterval(crono); }
 
-    function descargar() {
-        html2pdf().from(document.getElementById('print-area')).save("Prescripcion_EPEF_PRO.pdf");
+    function descargarPDF() {
+        const element = document.getElementById('pdf-area');
+        html2pdf().from(element).save('EPEF_PRO_Estadios.pdf');
     }
 </script>
 </body>
