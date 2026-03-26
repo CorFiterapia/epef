@@ -3,246 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EPEF Pro - Sistema de Prescripción Biopsicosocial</title>
+    <title>EPEF Pro v2.2 - Sistema Maestro de Prescripción</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
-            --primary: #1a365d;
-            --accent: #38a169;
-            --warning: #dd6b20;
-            --danger: #e53e3e;
-            --bg: #f7fafc;
-            --white: #ffffff;
-            --gray: #718096;
+            --primary: #1a365d; --accent: #38a169; --warning: #dd6b20; --danger: #e53e3e;
+            --bg: #f7fafc; --white: #ffffff; --gray: #718096;
         }
-
-        body {
-            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-            background: var(--bg);
-            color: var(--primary);
-            line-height: 1.5;
-            margin: 0;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: auto;
-            background: var(--white);
-            border-radius: 12px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-
-        header {
-            background: var(--primary);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-
-        .section-card {
-            padding: 25px;
-            border-bottom: 1px solid #edf2f7;
-        }
-
-        .section-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            border-left: 4px solid var(--accent);
-            padding-left: 10px;
-        }
-
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-
-        .grid-4 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-        }
-
-        label {
-            display: block;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--gray);
-            margin-bottom: 6px;
-            text-transform: uppercase;
-        }
-
-        select, input {
-            width: 100%;
-            padding: 10px;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            transition: all 0.2s;
-        }
-
-        .btn-main {
-            background: var(--accent);
-            color: white;
-            padding: 18px;
-            border: none;
-            width: 100%;
-            font-weight: bold;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: opacity 0.3s;
-        }
-
-        .link-modulo {
-            background: #edf2f7;
-            padding: 10px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            color: var(--primary);
-            text-decoration: none;
-            display: inline-block;
-            margin-right: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #cbd5e0;
-        }
-
-        /* Borg Interface */
-        .borg-container {
-            background: #edf2f7;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .borg-scale {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-            gap: 5px;
-        }
-
-        .borg-box {
-            flex: 1;
-            padding: 10px;
-            font-size: 0.8rem;
-            border-radius: 4px;
-            background: white;
-            cursor: pointer;
-            border: 1px solid #cbd5e0;
-        }
-
-        .borg-box.active { background: var(--accent); color: white; border-color: var(--accent); }
-
-        /* TABLERO DE AVANCE */
-        .dashboard-avance {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .dash-item {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-        }
-
-        .dash-val {
-            font-size: 1.4rem;
-            font-weight: 800;
-            color: var(--primary);
-            display: block;
-        }
-
-        .dash-lab {
-            font-size: 0.65rem;
-            color: var(--gray);
-            text-transform: uppercase;
-            font-weight: bold;
-        }
-
-        .text-danger { color: var(--danger) !important; }
-
-        /* Results Display */
-        #resultado { display: none; padding: 25px; }
-        .pro-box { background: #f0f4f8; border: 1px solid #d9e2ec; padding: 15px; border-radius: 8px; }
-        .paciente-box { border: 2px solid var(--accent); padding: 15px; border-radius: 8px; margin-top: 15px; }
-
-        .complicacion-tag {
-            background: #fee2e2;
-            color: #991b1b;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.7rem;
-            margin-right: 5px;
-        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--primary); margin: 0; padding: 20px; }
+        .container { max-width: 1100px; margin: auto; background: var(--white); border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; }
+        header { background: var(--primary); color: white; padding: 30px; text-align: center; border-bottom: 5px solid var(--accent); }
+        .section-card { padding: 25px; border-bottom: 1px solid #edf2f7; }
+        .section-title { font-size: 1.1rem; font-weight: 700; color: var(--primary); margin-bottom: 20px; border-left: 5px solid var(--accent); padding-left: 15px; text-transform: uppercase; letter-spacing: 1px; }
+        .grid-main { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--gray); margin-bottom: 8px; }
+        select, input, textarea { width: 100%; padding: 10px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 0.95rem; transition: border-color 0.3s; box-sizing: border-box; }
+        select:focus, input:focus { border-color: var(--accent); outline: none; }
+        .checkbox-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0; }
+        .checkbox-item { display: flex; align-items: center; font-size: 0.85rem; cursor: pointer; }
+        .checkbox-item input { width: auto; margin-right: 10px; }
+        .btn-calculate { background: var(--accent); color: white; padding: 18px; border: none; width: 100%; font-size: 1.1rem; font-weight: bold; cursor: pointer; border-radius: 0 0 12px 12px; transition: background 0.3s; }
+        .btn-calculate:hover { background: #2f855a; }
+        
+        /* Resultados */
+        #resultado { display: none; padding: 30px; background: #fff; }
+        .estadio-banner { padding: 20px; border-radius: 10px; color: white; text-align: center; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .dual-output { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 20px; }
+        .output-box { padding: 20px; border-radius: 10px; border: 1px solid #e2e8f0; position: relative; }
+        .output-box.prof { background: #f1f5f9; border-top: 5px solid var(--primary); }
+        .output-box.pac { background: #f0fff4; border-top: 5px solid var(--accent); }
+        .badge { position: absolute; top: -12px; right: 20px; padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: bold; color: white; }
+        
+        .alert-hipo { background: #fff5f5; border: 2px solid #feb2b2; color: #c53030; padding: 15px; border-radius: 8px; margin: 15px 0; font-weight: bold; display: flex; align-items: center; gap: 10px; }
+        
+        @media (max-width: 768px) { .dual-output { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
-<div class="container" id="reporte-final">
+<div class="container" id="app-content">
     <header>
-        <h1 style="margin:0; font-size: 1.8rem;">EPEF Pro v2.0</h1>
-        <p style="margin:5px 0 0 0; opacity: 0.8;">Prescripción Clínica Biopsicosocial y Metabólica</p>
+        <h1 style="margin:0;">SISTEMA EPEF v2.2</h1>
+        <p style="margin:10px 0 0 0; font-weight: 300;">Algoritmo Maestro de Estratificación y Seguimiento Clínico</p>
     </header>
 
-    <div id="form-area">
-        <div class="section-card" style="background: #f8fafc;">
-            <div class="section-title">Control de Signos Vitales y Enlaces de Consulta</div>
-            <div class="grid-4" style="margin-bottom: 20px;">
-                <div>
-                    <label>Tensión Arterial (mmHg)</label>
-                    <input type="text" id="presion_art" placeholder="Ej: 120/80">
-                </div>
-                <div>
-                    <label>Frecuencia Cardíaca (LPM)</label>
-                    <input type="number" id="fc_reposo" placeholder="En reposo">
-                </div>
-                <div>
-                    <label>Glucosa Capilar (mg/dL)</label>
-                    <input type="number" id="glucosa_val" placeholder="Ej: 110">
-                </div>
-                <div>
-                    <label>HbA1c (%)</label>
-                    <input type="number" step="0.1" id="hba1c_val" placeholder="Ej: 6.5">
-                </div>
-            </div>
-            <label>Links de Referencia / Tests Online:</label>
-            <div style="margin-top: 10px;">
-                <a href="https://www.mdcalc.com/calc/1025/framingham-risk-score-hard-coronary-heart-disease" target="_blank" class="link-modulo">Riesgo Framingham</a>
-                <a href="https://www.mdcalc.com/calc/3915/barthel-index-activities-daily-living-adl" target="_blank" class="link-modulo">Índice Barthel</a>
-                <a href="https://www.mdcalc.com/calc/1729/phq-9-patient-health-questionnaire-9" target="_blank" class="link-modulo">Test PHQ-9</a>
-                <a href="https://estilo.es/calculadora-vo2max/" target="_blank" class="link-modulo">Calc. VO2 Máx</a>
-            </div>
-        </div>
-
-        <div class="section-card">
-            <div class="section-title">Información Clínica</div>
-            <div class="grid-3">
-                <div>
-                    <label>Paciente</label>
-                    <input type="text" id="paciente" placeholder="Nombre completo">
-                </div>
-                <div>
-                    <label>Diagnóstico Base</label>
-                    <select id="diagnostico">
-                        <option value="1">Riesgo Metabólico / Obesidad</option>
-                        <option value="2">Prediabetes</option>
-                        <option value="3">Diabetes Tipo 2</option>
-                        <option value="4">Diabetes Tipo 1</option>
-                    </select>
-                </div>
-                <div>
-                    <label>Riesgo Cardiovascular</label>
+    <div class="section-card">
+        <div class="section-title">1. Entrada de Datos Clínicos y Farmacología</div>
+        <div class="grid-main">
+            <div>
+                <label>Diagnóstico de Base (Dx)</label>
+                <select id="dx">
+                    <option value="1">Prediabetes</option>
+                    <option value="2">Diabetes Mellitus Tipo 2</option>
+                    <option value="3">Diabetes Mellitus Tipo 1</option>
+                </select>
+                <div style="margin-top:15px;">
+                    <label>Riesgo Cardiovascular (RCV)</label>
                     <select id="rcv">
                         <option value="0">Bajo</option>
                         <option value="1">Moderado</option>
@@ -251,198 +67,183 @@
                     </select>
                 </div>
             </div>
-
-            <div style="margin-top: 15px;">
+            <div>
+                <label>Medicamentos (Riesgo Metabólico)</label>
+                <div class="checkbox-group">
+                    <label class="checkbox-item"><input type="checkbox" class="med" value="Metformina"> Metformina</label>
+                    <label class="checkbox-item"><input type="checkbox" class="med" value="iSGLT2"> iSGLT2</label>
+                    <label class="checkbox-item"><input type="checkbox" class="med" value="arGLP1"> arGLP-1</label>
+                    <label class="checkbox-item" style="color:var(--danger)"><input type="checkbox" class="med" value="Sulfonilureas" data-risk="high"> Sulfonilureas</label>
+                    <label class="checkbox-item" style="color:var(--danger)"><input type="checkbox" class="med" value="Insulina" data-risk="high"> Insulinas</label>
+                </div>
+            </div>
+            <div>
                 <label>Complicaciones Presentes</label>
-                <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-                    <label style="text-transform:none; color:black;"><input type="checkbox" class="comp" value="retino"> Retinopatía</label>
-                    <label style="text-transform:none; color:black;"><input type="checkbox" class="comp" value="nefro"> Nefropatía</label>
-                    <label style="text-transform:none; color:black;"><input type="checkbox" class="comp" value="neuro"> Neuropatía</label>
-                    <label style="text-transform:none; color:black;"><input type="checkbox" class="comp" value="pie"> Pie Diabético</label>
+                <div class="checkbox-group">
+                    <label class="checkbox-item"><input type="checkbox" class="comp" value="Retinopatía"> Retinopatía</label>
+                    <label class="checkbox-item"><input type="checkbox" class="comp" value="Nefropatía"> Nefropatía</label>
+                    <label class="checkbox-item"><input type="checkbox" class="comp" value="Neuropatía"> Neuropatía</label>
+                    <label class="checkbox-item"><input type="checkbox" class="comp" value="Pie Diabético"> Pie Diabético</label>
                 </div>
             </div>
         </div>
-
-        <div class="section-card">
-            <div class="section-title">Tratamiento Farmacológico</div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.85rem;">
-                <div>
-                    <label style="text-transform:none; color:black;"><input type="checkbox" class="med" value="Metformina"> Metformina</label>
-                    <label style="text-transform:none; color:black;"><input type="checkbox" class="med" value="iSGLT2"> iSGLT2</label>
-                </div>
-                <div>
-                    <label style="text-transform:none; color:black;"><input type="checkbox" class="med" value="Sulfonilureas"> Sulfonilureas</label>
-                    <label style="text-transform:none; color:black;"><input type="checkbox" class="med" value="Insulina"> Insulina</label>
-                </div>
-            </div>
-        </div>
-
-        <div class="section-card">
-            <div class="section-title">Valoración Funcional y Borg</div>
-            <div class="grid-3">
-                <div>
-                    <label>Barthel (AVD)</label>
-                    <select id="barthel">
-                        <option value="0">Independiente</option>
-                        <option value="1">Dep. Leve</option>
-                        <option value="2">Dep. Moderada</option>
-                    </select>
-                </div>
-                <div>
-                    <label>Fatiga (FSS)</label>
-                    <select id="fatiga">
-                        <option value="0">Baja</option>
-                        <option value="1">Moderada</option>
-                        <option value="2">Alta</option>
-                    </select>
-                </div>
-                <div>
-                    <label>Esfera Mental</label>
-                    <select id="mental">
-                        <option value="0">Estable</option>
-                        <option value="1">Leve</option>
-                        <option value="2">Moderada</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="borg-container">
-                <label>Esfuerzo Percibido (Borg 6-20)</label>
-                <div class="borg-scale" id="borgScale">
-                    <div class="borg-box" data-val="6">6</div>
-                    <div class="borg-box" data-val="9">9</div>
-                    <div class="borg-box" data-val="11">11</div>
-                    <div class="borg-box" data-val="13">13</div>
-                    <div class="borg-box" data-val="15">15</div>
-                    <div class="borg-box" data-val="17">17</div>
-                    <div class="borg-box" data-val="20">20</div>
-                </div>
-                <input type="hidden" id="borg_val" value="6">
-            </div>
-        </div>
-
-        <button class="btn-main" onclick="procesarEPEF()">GENERAR INFORME CLÍNICO EPEF PRO</button>
     </div>
 
+    <div class="section-card">
+        <div class="section-title">2. Valoración Funcional y Salud Mental</div>
+        <div class="grid-main">
+            <div>
+                <label>Autonomía (Índice de Barthel)</label>
+                <select id="barthel">
+                    <option value="0">Independiente (100 pts)</option>
+                    <option value="1">Dependencia Leve (91-99 pts)</option>
+                    <option value="2">Dependencia Moderada (61-90 pts)</option>
+                    <option value="3">Dependencia Severa (<60 pts)</option>
+                </select>
+            </div>
+            <div>
+                <label>Salud Mental (PHQ-9 / GAD-7)</label>
+                <select id="mental">
+                    <option value="0">Estable / Sin síntomas</option>
+                    <option value="1">Sintomatología Leve</option>
+                    <option value="2">Sintomatología Moderada</option>
+                    <option value="3">Sintomatología Severa</option>
+                </select>
+            </div>
+            <div>
+                <label>Capacidad Física Inicial</label>
+                <input type="text" id="capacidad" placeholder="VO2 máx, Test de marcha, etc.">
+            </div>
+        </div>
+    </div>
+
+    <div class="section-card" style="background: #f8fafc;">
+        <div class="section-title">📈 Ficha de Seguimiento de la Sesión</div>
+        <div class="grid-main">
+            <div>
+                <label>Glucemia Pre / Post (mg/dL)</label>
+                <div style="display:flex; gap:10px;">
+                    <input type="number" id="g_pre" placeholder="Pre">
+                    <input type="number" id="g_post" placeholder="Post">
+                </div>
+            </div>
+            <div>
+                <label>Signos Vitales (TA / SaO2)</label>
+                <div style="display:flex; gap:10px;">
+                    <input type="text" id="ta" placeholder="120/80">
+                    <input type="number" id="sao2" placeholder="98%">
+                </div>
+            </div>
+            <div>
+                <label>Esfuerzo Percibido (Borg 0-10)</label>
+                <select id="borg">
+                    <option value="0-2">Muy suave</option>
+                    <option value="3-4">Moderado</option>
+                    <option value="5-6">Algo pesado</option>
+                    <option value="7-8">Pesado (Fase II/III)</option>
+                    <option value="9-10">Muy pesado</option>
+                </select>
+            </div>
+        </div>
+        <div style="margin-top:15px;">
+            <label>Observaciones Clínicas</label>
+            <textarea id="obs" rows="2" placeholder="Ej: Tolerancia al esfuerzo, síntomas, ajustes realizados..."></textarea>
+        </div>
+    </div>
+
+    <button class="btn-calculate" onclick="ejecutarMaestro()">GENERAR ESTRATIFICACIÓN Y REPORTE DUAL</button>
+
     <div id="resultado">
-        <div id="res-header" style="padding: 20px; border-radius: 8px; color: white; margin-bottom: 20px; text-align: center;"></div>
+        <div id="banner" class="estadio-banner"></div>
 
-        <div class="section-title">Tablero de Avance del Paciente</div>
-        <div class="dashboard-avance">
-            <div class="dash-item">
-                <span class="dash-lab">Tensión Art.</span>
-                <span class="dash-val" id="dash-ta">--</span>
+        <div class="dual-output">
+            <div class="output-box prof">
+                <span class="badge" style="background:var(--primary)">CIENTÍFICO</span>
+                <h3 style="margin-top:0;">Reporte Profesional</h3>
+                <div id="data-prof" style="font-size: 0.9rem; line-height: 1.6;"></div>
             </div>
-            <div class="dash-item">
-                <span class="dash-lab">Freq. Cardíaca</span>
-                <span class="dash-val" id="dash-fc">--</span>
-            </div>
-            <div class="dash-item">
-                <span class="dash-lab">Glucosa Cap.</span>
-                <span class="dash-val" id="dash-glu">--</span>
-            </div>
-            <div class="dash-item">
-                <span class="dash-lab">HbA1c</span>
-                <span class="dash-val" id="dash-hba1c">--</span>
+
+            <div class="output-box pac">
+                <span class="badge" style="background:var(--accent)">PEDAGÓGICO</span>
+                <h3 style="margin-top:0;">Guía para el Paciente</h3>
+                <div id="data-pac" style="font-size: 0.9rem; line-height: 1.6;"></div>
             </div>
         </div>
-        
-        <div class="pro-box">
-            <h3 style="margin-top:0; color: var(--primary);">1. Prescripción para Profesionales</h3>
-            <div id="pro-content"></div>
-            <h4 style="margin: 10px 0 5px 0; font-size: 0.9rem;">Consideraciones Farmacológicas:</h4>
-            <div id="med-content"></div>
-        </div>
 
-        <div class="paciente-box">
-            <h3 style="margin-top:0; color: var(--accent);">2. Guía Pedagógica para el Paciente</h3>
-            <div id="pac-content"></div>
-        </div>
-
-        <button class="btn-main btn-pdf" onclick="generarPDF()" style="background:var(--primary); margin-top:20px;">DESCARGAR REPORTE PDF</button>
+        <button class="btn-calculate" onclick="descargarPDF()" style="margin-top:30px; background:var(--primary)">DESCARGAR DOCUMENTO CLÍNICO (PDF)</button>
     </div>
 </div>
 
 <script>
-    document.querySelectorAll('.borg-box').forEach(box => {
-        box.addEventListener('click', function() {
-            document.querySelectorAll('.borg-box').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            document.getElementById('borg_val').value = this.dataset.val;
-        });
-    });
-
-    function procesarEPEF() {
-        const paciente = document.getElementById("paciente").value || 'No especificado';
-        const d = parseInt(document.getElementById("diagnostico").value);
-        const rcv = parseInt(document.getElementById("rcv").value);
-        const b = parseInt(document.getElementById("borg_val").value);
+    function ejecutarMaestro() {
+        // 1. Captura de datos
+        const valDx = parseInt(document.getElementById('dx').value);
+        const valRcv = parseInt(document.getElementById('rcv').value);
+        const valBar = parseInt(document.getElementById('barthel').value);
+        const valMen = parseInt(document.getElementById('mental').value);
         
-        const rawTa = document.getElementById("presion_art").value || '--';
-        const rawFc = parseFloat(document.getElementById("fc_reposo").value);
-        const rawGlu = parseFloat(document.getElementById("glucosa_val").value);
-        const rawHba = parseFloat(document.getElementById("hba1c_val").value);
+        const meds = Array.from(document.querySelectorAll('.med:checked')).map(m => m.value);
+        const esAltoRiesgo = Array.from(document.querySelectorAll('.med:checked')).some(m => m.dataset.risk === 'high');
+        const complicaciones = Array.from(document.querySelectorAll('.comp:checked')).map(c => c.value);
 
-        // Lógica de Alertas Visuales
-        const dashTa = document.getElementById("dash-ta");
-        const dashFc = document.getElementById("dash-fc");
-        const dashGlu = document.getElementById("dash-glu");
-        const dashHba = document.getElementById("dash-hba1c");
+        // 2. Algoritmo EPEF (Pesos: RCVx4, Dxx3, Barthelx3, Mentalx2)
+        const score = (valRcv * 4) + (valDx * 3) + (valBar * 3) + (valMen * 2) + (complicaciones.length * 2);
 
-        dashTa.innerText = rawTa;
-        dashTa.className = "dash-val";
-        if(rawTa.split('/')[0] >= 140 || rawTa.split('/')[1] >= 90) dashTa.classList.add("text-danger");
+        let fase, meta, color, pautaPro, pautaPac;
 
-        dashFc.innerText = isNaN(rawFc) ? '--' : rawFc + " lpm";
-        dashFc.className = "dash-val";
-        if(rawFc > 100 || rawFc < 50) dashFc.classList.add("text-danger");
-
-        dashGlu.innerText = isNaN(rawGlu) ? '--' : rawGlu + " mg/dL";
-        dashGlu.className = "dash-val";
-        if(rawGlu > 180 || rawGlu < 70) dashGlu.classList.add("text-danger");
-
-        dashHba.innerText = isNaN(rawHba) ? '--' : rawHba + "%";
-        dashHba.className = "dash-val";
-        if(rawHba >= 7.0) dashHba.classList.add("text-danger");
-
-        let score = (d * 4) + (rcv * 3) + (b / 2);
-        let color, estadio, proTips, pacTips;
-
+        // 3. Clasificación de Estadio
         if (score <= 15) {
-            estadio = "Estadio Ia - Optimización";
+            fase = "Fase I: Prevención / Optimización";
+            meta = "Biogénesis Mitocondrial";
             color = "#38a169";
-            proTips = "HIIT moderado (65-75% VO2max).";
-            pacTips = "Puede realizar ejercicio moderado.";
-        } else if (score <= 25) {
-            estadio = "Estadio IIb/IIIc - Manejo Controlado";
+            pautaPro = "Intensidad: 50-70% VO2máx. Frecuencia: 4-5 días/sem. Enfoque en densidad mitocondrial.";
+            pautaPac = "¡Excelente! Su cuerpo está listo para mejorar su energía. Realice caminatas dinámicas y fuerza suave.";
+        } else if (score <= 30) {
+            fase = "Fase II: Manejo Activo";
+            meta = "Control Glucémico y Translocación GLUT4";
             color = "#dd6b20";
-            proTips = "Entrenamiento concurrente supervisado.";
-            pacTips = "Camine constante, no se agote.";
+            pautaPro = "Entrenamiento concurrente (Fuerza + Aeróbico). Vigilar picos de glucemia.";
+            pautaPac = "Nivel Activo: Combine sus ejercicios con pesas ligeras. Esto ayudará a que su azúcar entre al músculo.";
         } else {
-            estadio = "Estadio IVd - Protección Clínica";
+            fase = "Fase III: Riesgo Clínico";
+            meta = "Seguridad, Movilidad y Estabilidad";
             color = "#e53e3e";
-            proTips = "Baja carga metabólica (<3 METs).";
-            pacTips = "Ejercicios muy suaves, priorice seguridad.";
+            pautaPro = "Intensidad baja (<40% VO2máx). Priorizar seguridad cardiovascular y cuidado de extremidades.";
+            pautaPac = "Nivel de Cuidado: Realice ejercicios sentados o con apoyo. Lo más importante hoy es su seguridad.";
         }
 
-        document.getElementById("resultado").style.display = "block";
-        document.getElementById("res-header").style.background = color;
-        document.getElementById("res-header").innerHTML = `
-            <div style="font-size: 1.2rem; font-weight: bold;">${estadio}</div>
-            <div style="font-size: 0.9rem;">Paciente: ${paciente} | Score: ${score.toFixed(1)}</div>
+        // 4. Renderizado
+        document.getElementById('resultado').style.display = 'block';
+        const banner = document.getElementById('banner');
+        banner.style.background = color;
+        banner.innerHTML = `<h2 style="margin:0">${fase}</h2><p style="margin:5px 0 0 0">Puntaje Total: ${score} | Meta Principal: ${meta}</p>`;
+
+        // Reporte Profesional
+        document.getElementById('data-prof').innerHTML = `
+            <p><b>Estratificación RCV:</b> ${document.getElementById('rcv').options[valRcv].text}</p>
+            <p><b>Complicaciones:</b> ${complicaciones.join(', ') || 'Ninguna detectada'}</p>
+            <p><b>FITT-VP Recomendado:</b> ${pautaPro}</p>
+            <hr>
+            <p><b>Datos de Sesión:</b> Glucemia Δ: ${document.getElementById('g_pre').value} -> ${document.getElementById('g_post').value} mg/dL | TA: ${document.getElementById('ta').value}</p>
         `;
 
-        document.getElementById("pro-content").innerHTML = `<p><strong>FITT-VP:</strong> ${proTips}</p>`;
-        document.getElementById("pac-content").innerHTML = `<p>${pacTips}</p>`;
+        // Guía Paciente
+        let alertaHtml = esAltoRiesgo ? `<div class="alert-hipo">⚠️ ALERTA: Sus medicamentos pueden bajar mucho su azúcar. Lleve siempre una fruta o dulce a su terapia.</div>` : '';
+        document.getElementById('data-pac').innerHTML = `
+            ${alertaHtml}
+            <p><b>Su meta de hoy:</b> ${pautaPac}</p>
+            <p><b>Nota del Fisioterapeuta:</b> ${document.getElementById('obs').value || 'Siga el plan indicado.'}</p>
+            <p><b>⚠️ Cuidado de pies:</b> Revise que no tenga manchas rojas o ampollas al terminar.</p>
+        `;
 
-        window.scrollTo(0, document.getElementById("resultado").offsetTop);
+        window.scrollTo({ top: document.getElementById('resultado').offsetTop, behavior: 'smooth' });
     }
 
-    function generarPDF() {
-        const element = document.getElementById('reporte-final');
+    function descargarPDF() {
+        const element = document.getElementById('app-content');
         const opt = {
             margin: 5,
-            filename: 'EPEF_Pro_Reporte.pdf',
+            filename: 'Reporte_EPEF_Dual.pdf',
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2 },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
@@ -450,5 +251,6 @@
         html2pdf().set(opt).from(element).save();
     }
 </script>
+
 </body>
 </html>
