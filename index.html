@@ -87,8 +87,6 @@
             transition: all 0.2s;
         }
 
-        select:focus { border-color: var(--accent); outline: none; }
-
         .btn-main {
             background: var(--accent);
             color: white;
@@ -99,11 +97,6 @@
             font-size: 1rem;
             cursor: pointer;
             transition: opacity 0.3s;
-        }
-
-        .btn-pdf {
-            background: var(--primary);
-            margin-top: 10px;
         }
 
         .link-modulo {
@@ -118,8 +111,6 @@
             margin-bottom: 10px;
             border: 1px solid #cbd5e0;
         }
-
-        .link-modulo:hover { background: #e2e8f0; }
 
         /* Borg Interface */
         .borg-container {
@@ -149,18 +140,40 @@
 
         .borg-box.active { background: var(--accent); color: white; border-color: var(--accent); }
 
-        /* Results Display */
-        #resultado { display: none; padding: 25px; }
-        
-        .badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 99px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            margin-top: 5px;
+        /* TABLERO DE AVANCE */
+        .dashboard-avance {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
+        .dash-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .dash-val {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: block;
+        }
+
+        .dash-lab {
+            font-size: 0.65rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .text-danger { color: var(--danger) !important; }
+
+        /* Results Display */
+        #resultado { display: none; padding: 25px; }
         .pro-box { background: #f0f4f8; border: 1px solid #d9e2ec; padding: 15px; border-radius: 8px; }
         .paciente-box { border: 2px solid var(--accent); padding: 15px; border-radius: 8px; margin-top: 15px; }
 
@@ -207,8 +220,7 @@
             <div style="margin-top: 10px;">
                 <a href="https://www.mdcalc.com/calc/1025/framingham-risk-score-hard-coronary-heart-disease" target="_blank" class="link-modulo">Riesgo Framingham</a>
                 <a href="https://www.mdcalc.com/calc/3915/barthel-index-activities-daily-living-adl" target="_blank" class="link-modulo">Índice Barthel</a>
-                <a href="https://www.mdcalc.com/calc/1729/phq-9-patient-health-questionnaire-9" target="_blank" class="link-modulo">Test PHQ-9 (Depresión)</a>
-                <a href="https://www.mdcalc.com/calc/1727/gad-7-general-anxiety-disorder-7" target="_blank" class="link-modulo">Test GAD-7 (Ansiedad)</a>
+                <a href="https://www.mdcalc.com/calc/1729/phq-9-patient-health-questionnaire-9" target="_blank" class="link-modulo">Test PHQ-9</a>
                 <a href="https://estilo.es/calculadora-vo2max/" target="_blank" class="link-modulo">Calc. VO2 Máx</a>
             </div>
         </div>
@@ -230,12 +242,12 @@
                     </select>
                 </div>
                 <div>
-                    <label>Riesgo Cardiovascular (Framingham/SCORE)</label>
+                    <label>Riesgo Cardiovascular</label>
                     <select id="rcv">
                         <option value="0">Bajo</option>
                         <option value="1">Moderado</option>
                         <option value="2">Alto</option>
-                        <option value="3">Muy Alto / Evento Previo</option>
+                        <option value="3">Muy Alto</option>
                     </select>
                 </div>
             </div>
@@ -245,102 +257,65 @@
                 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
                     <label style="text-transform:none; color:black;"><input type="checkbox" class="comp" value="retino"> Retinopatía</label>
                     <label style="text-transform:none; color:black;"><input type="checkbox" class="comp" value="nefro"> Nefropatía</label>
-                    <label style="text-transform:none; color:black;"><input type="checkbox" class="comp" value="neuro"> Neuropatía Periférica</label>
+                    <label style="text-transform:none; color:black;"><input type="checkbox" class="comp" value="neuro"> Neuropatía</label>
                     <label style="text-transform:none; color:black;"><input type="checkbox" class="comp" value="pie"> Pie Diabético</label>
-                    <label style="text-transform:none; color:black;"><input type="checkbox" class="comp" value="vasculo"> Enf. Vascular</label>
                 </div>
             </div>
         </div>
 
         <div class="section-card">
             <div class="section-title">Tratamiento Farmacológico</div>
-            <label>Seleccione Medicamentos Actuales (Control de Riesgo de Hipoglucemia)</label>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.85rem;">
                 <div>
-                    <p style="font-weight: bold; margin-bottom: 5px; font-size: 0.75rem;">Orales / Inyectables</p>
-                    <label style="text-transform:none; color:black;"><input type="checkbox" class="med" value="Metformina"> Metformina (Biguanida)</label>
-                    <label style="text-transform:none; color:black;"><input type="checkbox" class="med" value="iSGLT2"> iSGLT2 (Dapagliflozina/Empagliflozina)</label>
-                    <label style="text-transform:none; color:black;"><input type="checkbox" class="med" value="arGLP1"> arGLP-1 (Liraglutida/Semaglutida)</label>
-                    <label style="text-transform:none; color:black;"><input type="checkbox" class="med" value="Sulfonilureas"> Sulfonilureas (Glibenclamida/Gliclazida)</label>
+                    <label style="text-transform:none; color:black;"><input type="checkbox" class="med" value="Metformina"> Metformina</label>
+                    <label style="text-transform:none; color:black;"><input type="checkbox" class="med" value="iSGLT2"> iSGLT2</label>
                 </div>
                 <div>
-                    <p style="font-weight: bold; margin-bottom: 5px; font-size: 0.75rem;">Insulinas</p>
-                    <label style="text-transform:none; color:black;"><input type="checkbox" class="med" value="Insulina Basal"> Insulina Basal (Glargina/Degludec)</label>
-                    <label style="text-transform:none; color:black;"><input type="checkbox" class="med" value="Insulina Rápida"> Insulina Rápida/Prandial (Lispro/Aspart)</label>
+                    <label style="text-transform:none; color:black;"><input type="checkbox" class="med" value="Sulfonilureas"> Sulfonilureas</label>
+                    <label style="text-transform:none; color:black;"><input type="checkbox" class="med" value="Insulina"> Insulina</label>
                 </div>
             </div>
         </div>
 
         <div class="section-card">
-            <div class="section-title">Valoración Funcional y Física</div>
+            <div class="section-title">Valoración Funcional y Borg</div>
             <div class="grid-3">
                 <div>
-                    <label>VO2 Máx Estimado (ml/kg/min)</label>
-                    <input type="number" id="vo2" placeholder="Ej: 25">
-                </div>
-                <div>
-                    <label>Índice de Barthel (AVD)</label>
+                    <label>Barthel (AVD)</label>
                     <select id="barthel">
-                        <option value="0">Independiente (100)</option>
-                        <option value="1">Dependencia Leve (91-99)</option>
-                        <option value="2">Dependencia Moderada (61-90)</option>
-                        <option value="3">Dependencia Severa (<60)</option>
+                        <option value="0">Independiente</option>
+                        <option value="1">Dep. Leve</option>
+                        <option value="2">Dep. Moderada</option>
                     </select>
                 </div>
                 <div>
-                    <label>Nivel de Fatiga (Escala FSS)</label>
+                    <label>Fatiga (FSS)</label>
                     <select id="fatiga">
                         <option value="0">Baja</option>
                         <option value="1">Moderada</option>
-                        <option value="2">Alta / Crónica</option>
+                        <option value="2">Alta</option>
                     </select>
                 </div>
-            </div>
-        </div>
-
-        <div class="section-card">
-            <div class="section-title">Esfera Biopsicosocial y Cognición</div>
-            <div class="grid-3">
                 <div>
-                    <label>Salud Mental (Depresión/Ansiedad)</label>
+                    <label>Esfera Mental</label>
                     <select id="mental">
                         <option value="0">Estable</option>
-                        <option value="1">Sintomatología Leve (GAD/PHQ)</option>
+                        <option value="1">Leve</option>
                         <option value="2">Moderada</option>
-                        <option value="3">Severa / Depresión Mayor</option>
-                    </select>
-                </div>
-                <div>
-                    <label>Calidad de Sueño / Calidad de Vida</label>
-                    <select id="vida">
-                        <option value="0">Buena / Reparadora</option>
-                        <option value="1">Regular / Intermitente</option>
-                        <option value="2">Mala / Insomnio Clínico</option>
-                    </select>
-                </div>
-                <div>
-                    <label>Cognición / Motivación</label>
-                    <select id="cognicion">
-                        <option value="0">Preservada / Alta Motivación</option>
-                        <option value="1">Deterioro Leve / Desmotivación</option>
-                        <option value="2">Deterioro Moderado</option>
                     </select>
                 </div>
             </div>
-        </div>
 
-        <div class="section-card">
-            <div class="section-title">Monitorización del Paciente</div>
             <div class="borg-container">
-                <label>Escala de Esfuerzo Percibido (Borg 6-20)</label>
+                <label>Esfuerzo Percibido (Borg 6-20)</label>
                 <div class="borg-scale" id="borgScale">
-                    <div class="borg-box" data-val="6">6<br>Reposo</div>
-                    <div class="borg-box" data-val="9">9<br>Muy Ligero</div>
-                    <div class="borg-box" data-val="11">11<br>Ligero</div>
-                    <div class="borg-box" data-val="13">13<br>Algo Duro</div>
-                    <div class="borg-box" data-val="15">15<br>Duro</div>
-                    <div class="borg-box" data-val="17">17<br>Muy Duro</div>
-                    <div class="borg-box" data-val="20">20<br>Máximo</div>
+                    <div class="borg-box" data-val="6">6</div>
+                    <div class="borg-box" data-val="9">9</div>
+                    <div class="borg-box" data-val="11">11</div>
+                    <div class="borg-box" data-val="13">13</div>
+                    <div class="borg-box" data-val="15">15</div>
+                    <div class="borg-box" data-val="17">17</div>
+                    <div class="borg-box" data-val="20">20</div>
                 </div>
                 <input type="hidden" id="borg_val" value="6">
             </div>
@@ -350,22 +325,41 @@
     </div>
 
     <div id="resultado">
-        <div id="res-header" style="padding: 20px; border-radius: 8px; color: white; margin-bottom: 20px;"></div>
+        <div id="res-header" style="padding: 20px; border-radius: 8px; color: white; margin-bottom: 20px; text-align: center;"></div>
+
+        <div class="section-title">Tablero de Avance del Paciente</div>
+        <div class="dashboard-avance">
+            <div class="dash-item">
+                <span class="dash-lab">Tensión Art.</span>
+                <span class="dash-val" id="dash-ta">--</span>
+            </div>
+            <div class="dash-item">
+                <span class="dash-lab">Freq. Cardíaca</span>
+                <span class="dash-val" id="dash-fc">--</span>
+            </div>
+            <div class="dash-item">
+                <span class="dash-lab">Glucosa Cap.</span>
+                <span class="dash-val" id="dash-glu">--</span>
+            </div>
+            <div class="dash-item">
+                <span class="dash-lab">HbA1c</span>
+                <span class="dash-val" id="dash-hba1c">--</span>
+            </div>
+        </div>
         
         <div class="pro-box">
             <h3 style="margin-top:0; color: var(--primary);">1. Prescripción para Profesionales</h3>
             <div id="pro-content"></div>
-            
-            <h4 style="margin-bottom:5px; color: var(--primary); border-top: 1px solid #ccc; padding-top: 10px;">Consideraciones Farmacológicas:</h4>
+            <h4 style="margin: 10px 0 5px 0; font-size: 0.9rem;">Consideraciones Farmacológicas:</h4>
             <div id="med-content"></div>
         </div>
 
         <div class="paciente-box">
-            <h3 style="margin-top:0; color: var(--accent);">2. Guía para el Paciente</h3>
+            <h3 style="margin-top:0; color: var(--accent);">2. Guía Pedagógica para el Paciente</h3>
             <div id="pac-content"></div>
         </div>
 
-        <button class="btn-main btn-pdf" onclick="generarPDF()">DESCARGAR REPORTE PDF</button>
+        <button class="btn-main btn-pdf" onclick="generarPDF()" style="background:var(--primary); margin-top:20px;">DESCARGAR REPORTE PDF</button>
     </div>
 </div>
 
@@ -382,78 +376,64 @@
         const paciente = document.getElementById("paciente").value || 'No especificado';
         const d = parseInt(document.getElementById("diagnostico").value);
         const rcv = parseInt(document.getElementById("rcv").value);
-        const bar = parseInt(document.getElementById("barthel").value);
-        const m = parseInt(document.getElementById("mental").value);
-        const f = parseInt(document.getElementById("fatiga").value);
         const b = parseInt(document.getElementById("borg_val").value);
         
-        // Signos Vitales
-        const ta = document.getElementById("presion_art").value || 'N/A';
-        const fc = document.getElementById("fc_reposo").value || 'N/A';
-        const glu = document.getElementById("glucosa_val").value || 'N/A';
-        const hba1c = document.getElementById("hba1c_val").value || 'N/A';
+        const rawTa = document.getElementById("presion_art").value || '--';
+        const rawFc = parseFloat(document.getElementById("fc_reposo").value);
+        const rawGlu = parseFloat(document.getElementById("glucosa_val").value);
+        const rawHba = parseFloat(document.getElementById("hba1c_val").value);
 
-        let comps = [];
-        document.querySelectorAll('.comp:checked').forEach(c => comps.push(c.value));
+        // Lógica de Alertas Visuales
+        const dashTa = document.getElementById("dash-ta");
+        const dashFc = document.getElementById("dash-fc");
+        const dashGlu = document.getElementById("dash-glu");
+        const dashHba = document.getElementById("dash-hba1c");
 
-        let meds = [];
-        document.querySelectorAll('.med:checked').forEach(m => meds.push(m.value));
+        dashTa.innerText = rawTa;
+        dashTa.className = "dash-val";
+        if(rawTa.split('/')[0] >= 140 || rawTa.split('/')[1] >= 90) dashTa.classList.add("text-danger");
 
-        let score = (d * 3) + (rcv * 4) + (bar * 3) + (m * 2) + (f * 2);
-        if(comps.length > 0) score += (comps.length * 2);
+        dashFc.innerText = isNaN(rawFc) ? '--' : rawFc + " lpm";
+        dashFc.className = "dash-val";
+        if(rawFc > 100 || rawFc < 50) dashFc.classList.add("text-danger");
 
+        dashGlu.innerText = isNaN(rawGlu) ? '--' : rawGlu + " mg/dL";
+        dashGlu.className = "dash-val";
+        if(rawGlu > 180 || rawGlu < 70) dashGlu.classList.add("text-danger");
+
+        dashHba.innerText = isNaN(rawHba) ? '--' : rawHba + "%";
+        dashHba.className = "dash-val";
+        if(rawHba >= 7.0) dashHba.classList.add("text-danger");
+
+        let score = (d * 4) + (rcv * 3) + (b / 2);
         let color, estadio, proTips, pacTips;
 
-        if (score <= 15 && rcv < 2) {
-            estadio = "Fase I - Optimización Metabólica";
+        if (score <= 15) {
+            estadio = "Estadio Ia - Optimización";
             color = "#38a169";
-            proTips = "Enfoque en HIIT moderado o MICT. Intensidad 65-80% FC Max. Fuerza: 2-3 series, 8-12 reps (70% 1RM).";
-            pacTips = "Puede realizar ejercicio de intensidad moderada a vigorosa. Combine caminata rápida con ejercicios de pesas.";
-        } else if (score <= 30) {
-            estadio = "Fase II - Manejo Funcional";
+            proTips = "HIIT moderado (65-75% VO2max).";
+            pacTips = "Puede realizar ejercicio moderado.";
+        } else if (score <= 25) {
+            estadio = "Estadio IIb/IIIc - Manejo Controlado";
             color = "#dd6b20";
-            proTips = "Entrenamiento concurrente supervisado. Controlar glucemia pre/post. Evitar picos hipertensivos. Borg 12-14.";
-            pacTips = "Camine 30 min a paso constante. Use bandas elásticas. No haga esfuerzos que le impidan hablar.";
+            proTips = "Entrenamiento concurrente supervisado.";
+            pacTips = "Camine constante, no se agote.";
         } else {
-            estadio = "Fase III - Protección y Rehabilitación";
+            estadio = "Estadio IVd - Protección Clínica";
             color = "#e53e3e";
-            proTips = "Carga metabólica baja (<3 METs). Vigilancia de signos de isquemia silente. Evitar maniobra de Valsalva.";
-            pacTips = "Caminatas breves (10 min) varias veces al día. Ejercicios de movilidad sentado. Priorice el descanso.";
+            proTips = "Baja carga metabólica (<3 METs).";
+            pacTips = "Ejercicios muy suaves, priorice seguridad.";
         }
 
         document.getElementById("resultado").style.display = "block";
         document.getElementById("res-header").style.background = color;
         document.getElementById("res-header").innerHTML = `
-            <div style="font-size: 1.2rem; font-weight: bold;">
-                ESTADIO: ${estadio} | SCORE: ${score}
-            </div>
-            <div>Paciente: ${paciente} | TA: ${ta} | FC: ${fc} | Gluc: ${glu} | HbA1c: ${hba1c}%</div>
+            <div style="font-size: 1.2rem; font-weight: bold;">${estadio}</div>
+            <div style="font-size: 0.9rem;">Paciente: ${paciente} | Score: ${score.toFixed(1)}</div>
         `;
 
-        let compHTML = comps.map(c => `<span class="complicacion-tag">${c.toUpperCase()}</span>`).join('');
-        
-        document.getElementById("pro-content").innerHTML = `
-            <p><strong>Complicaciones detectadas:</strong> ${compHTML || 'Ninguna'}</p>
-            <p><strong>FITT-VP:</strong> Frecuencia 4-6 días | Intensidad: ${proTips}</p>
-            <p><strong>Alertas Clínicas:</strong> Riesgo Cardiovascular: ${rcv}. Barthel: ${bar}. Vigilancia de neuropatía en pies.</p>
-        `;
-
-        let medAlert = meds.length > 0 ? meds.join(', ') : "No especificados";
-        let hipoRisk = (meds.includes("Sulfonilureas") || meds.includes("Insulina Rápida")) ? 
-            "<span style='color:red; font-weight:bold;'>ALTO RIESGO DE HIPOGLUCEMIA PERI-EJERCICIO.</span>" : "Riesgo bajo de hipoglucemia.";
-
-        document.getElementById("med-content").innerHTML = `
-            <p style="font-size:0.85rem;"><strong>Medicamentos reportados:</strong> ${medAlert}</p>
-            <p style="font-size:0.85rem;"><strong>Seguridad:</strong> ${hipoRisk} En iSGLT2, asegurar hidratación para evitar hipotensión ortostática.</p>
-        `;
-
-        document.getElementById("pac-content").innerHTML = `
-            <p><strong>Su plan de hoy:</strong> ${pacTips}</p>
-            <div style="background:#fff9c4; padding: 10px; border-radius: 5px;">
-                <strong>Nota de Seguridad:</strong> Su nivel de esfuerzo hoy fue de ${b}/20 (Borg). Manténgase hidratado y revise sus pies después de cada sesión.
-                ${meds.includes("Insulina Rápida") || meds.includes("Sulfonilureas") ? "<br><strong>¡Atención!</strong> Lleve siempre una fuente de azúcar rápida por si siente mareo o debilidad." : ""}
-            </div>
-        `;
+        document.getElementById("pro-content").innerHTML = `<p><strong>FITT-VP:</strong> ${proTips}</p>`;
+        document.getElementById("pac-content").innerHTML = `<p>${pacTips}</p>`;
 
         window.scrollTo(0, document.getElementById("resultado").offsetTop);
     }
@@ -462,7 +442,7 @@
         const element = document.getElementById('reporte-final');
         const opt = {
             margin: 5,
-            filename: 'Reporte_EPEF_PRO.pdf',
+            filename: 'EPEF_Pro_Reporte.pdf',
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2 },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
@@ -470,6 +450,5 @@
         html2pdf().set(opt).from(element).save();
     }
 </script>
-
 </body>
 </html>
